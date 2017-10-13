@@ -1,7 +1,6 @@
 package kennyTK;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import processing.core.PApplet;
 import processing.core.PVector;
