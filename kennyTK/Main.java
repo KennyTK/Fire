@@ -1,13 +1,19 @@
 package kennyTK;
 
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 public class Main extends PApplet
 {
-	int bgColor = color(10, 100, 100);
+	int bgColor = color(34, 49, 63);
 
-	Kenny kenny;
-	Board board;
+	PSystem flame;
+	PSystem smoke;
+	PSystem sparks;
+	PSystem fireflies;
+
+	ArrayList<PSystem> systems;
 
 	boolean fullscreen = false;
 
@@ -27,22 +33,28 @@ public class Main extends PApplet
 		colorMode(RGB, 255, 255, 255, 100);
 		ellipseMode(CENTER);
 
-		int tileSize = 32;
+		systems = new ArrayList<PSystem>();
 
-		kenny = new Kenny(this, width / 2, height / 2, 5, tileSize);
+		flame = new PSystem(this, width / 2, height / 2, 0, 0, 0, 0, 0, 0, 500, 500, 5, 4, color(150, 40, 27, 100), 1000, 60, 30);
+		smoke = new PSystem(this, width / 2, height / 2, 0, 0, 0, 0, 0, 0, 100, 100, 10, 10, color(108, 122, 137, 100), 30, 120, 30);
+		sparks = new PSystem(this, width / 2, height / 2, 0, 0, 0, 0, 0, 0, 100, 200, 5, 10, color(243, 156, 18, 100), 5, 240, 60);
+		fireflies = new PSystem(this, width / 2, height / 2, 1000, 0, 0, 0, 0, 0, 100, 200, 5, 10, color(232, 126, 4, 100), 20, 240, 60);
 
-		board = new Board(this, (int) tileSize);
-
-		smooth();
+		// the leading int is where it sits in the draw order
+		systems.add(0, flame);
+		systems.add(1, smoke);
+		systems.add(2, sparks);
+		systems.add(3, fireflies);
 	}
 
 	public void draw()
 	{
 		background(bgColor);
 
-		board.draw();
-
-		kenny.draw();
+		for (PSystem system : systems)
+		{
+			system.draw();
+		}
 	}
 
 	public void keyPressed()
@@ -51,65 +63,19 @@ public class Main extends PApplet
 		{
 			exit();
 		}
-		if (key == 'w')
+		if (key == 'a')
 		{
-			kenny.moveUp();
+
 		}
 		if (key == 's')
 		{
-			kenny.moveDown();
-		}
-		if (key == 'a')
-		{
-			kenny.moveLeft();
 		}
 		if (key == 'd')
 		{
-			kenny.moveRight();
 		}
-		if (key == 'g')
+		if (key == 'f')
 		{
-			// toggle automatic (atleast for testing)
+
 		}
-
-		// if (keyCode == SHIFT)
-		// {
-		// modif = true;
-		// System.out.println("True");
-		// }
-		//
-		// if (keyCode == CONTROL)
-		// {
-		// board.setTileStats(true);
-		// }
-
-		// if (key == 'f' && showTileStats == true)
-		// {
-		// showTileStats = false;
-		// }
-		// else if (key == 'f')
-		// {
-		// showTileStats = true;
-		// }
-
-		// System.out.println("Key: " + key);
-		// System.out.println("keyCode: " + keyCode);
-	}
-
-	public void keyReleased()
-	{
-		// if (keyCode == SHIFT && modif == true)
-		// {
-		// modif = false;
-		// System.out.println("False");
-		// }
-	}
-
-	public void mousePressed()
-	{
-		// if (modif)
-		// {
-		// kenny.moveTo(mouseX, mouseY);
-		// }
 	}
 }
