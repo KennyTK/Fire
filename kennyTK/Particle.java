@@ -18,10 +18,13 @@ public class Particle
 
 	private int lifeSpan;
 
-	public Particle(PApplet p, float x, float y, float vel, float acc, float size, int color, int lifeSpan)
+	public Particle(PApplet p, float x, float y, PVector vel, PVector acc, float size, int color, int lifeSpan)
 	{
-		loc = new PVector(x, y);
 		this.p = p;
+		loc = new PVector(x, y);
+		this.vel = vel;
+		this.acc = acc;
+
 		this.size = size;
 		this.color = color;
 		this.lifeSpan = lifeSpan;
@@ -29,8 +32,8 @@ public class Particle
 
 	private void calc()
 	{
-		// vel.add(acc);
-		// loc.add(vel);
+		vel.add(acc);
+		loc.add(vel);
 	}
 
 	public void draw()
@@ -39,15 +42,15 @@ public class Particle
 
 		p.pushStyle();
 		p.noStroke();
-		
-		p.fill(p.red(color),p.green(color),p.blue(color),(float)lifeSpan);
+
+		p.fill(p.red(color), p.green(color), p.blue(color), (float) lifeSpan);
 
 		p.ellipseMode(PConstants.CENTER);
-		
+
 		p.ellipse(loc.x, loc.y, size, size);
 
 		p.popStyle();
-		
+
 		lifeSpan--;
 	}
 

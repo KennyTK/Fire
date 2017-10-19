@@ -40,34 +40,44 @@ public class Main extends PApplet
 		systems = new ArrayList<PSystem>();
 		grass = new ArrayList<Point2D.Float>();
 
-		flame = new PSystem(this, width / 2, height / 2, 0, 0, 0, 0, 0, 0, 500, 500, 5, 4, color(150, 40, 27, 100), 1000, 60, 30);
-		smoke = new PSystem(this, width / 2, height / 2, 0, 0, 0, 0, 0, 0, 100, 100, 10, 10, color(108, 122, 137, 100), 30, 120, 30);
-		pollution = new PSystem(this, width / 2, height / 2, 0, 0, 0, 0, 0, 0, 100, 100, 10, 10, color(108, 122, 137, 100), 30, 120, 30);
-		sparks = new PSystem(this, width / 2, height / 2, 0, 0, 0, 0, 0, 0, 100, 200, 5, 10, color(243, 156, 18, 100), 5, 240, 60);
-		coals = new PSystem(this, width / 2, height / 2, 1000, 0, 0, 0, 0, 0, 100, 200, 5, 10, color(232, 126, 4, 100), 20, 240, 60);
-		fireflies = new PSystem(this, width / 2, height / 2, 1000, 0, 0, 0, 0, 0, 100, 200, 5, 10, color(232, 126, 4, 100), 20, 240, 60);
+		flame 		= new PSystem(this, width / 2, 520, .8f, getRadians(90), 0, .2f, 0, getRadians(0),-.01f, .01f, 30, 10, 3, 2, color(150, 40, 27, 100), 1000, 60, 30);
 
-		// the leading int is where it sits in the draw order
-		systems.add(0, flame);
-		systems.add(1, smoke);
-		systems.add(2, pollution);
-		systems.add(3, sparks);
-		systems.add(4, coals);
-		systems.add(5, fireflies);
+		smoke 		= new PSystem(this, width / 2, 500, 1f, getRadians(90), 0, 0, 0, 0, 0, 0, 30, 10, 15, 5, color(189, 195, 199, 70), 60, 180, 30);
+
+		pollution	= new PSystem(this, width / 2, 480, .5f, getRadians(90), 0, .1f, 0, getRadians(0), 0f, .02f, 30, 10, 20, 10, color(108, 122, 137, 50), 60, 180, 30);
+		
+		sparks 		= new PSystem(this, width / 2, 500, 1.2f, getRadians(90), 0, .3f, 0, getRadians(0), 0f, .02f, 20, 10, 3, 2, color(232, 126, 4), 50, 60, 30);
+
+		coals 		= new PSystem(this, width / 2, 525, .8f, getRadians(90), 0, .2f, 0, getRadians(0),-.01f, .01f, 30, 10, 3, 2, color(211, 84, 0, 100), 200, 30, 30);
+
+		fireflies	= new PSystem(this, 320, 250, 0, getRadians(0), -.2f, .2f, 0, getRadians(90), -.005f, .005f, 320, 250, 2, 2, color(233,212,96, 100), 10, 120, 30);
+
+		// draw order
+		systems.add(sparks);
+		systems.add(smoke);
+		systems.add(flame);
+		systems.add(pollution);
+		systems.add(coals);
+		systems.add(fireflies);
 
 		grass.add(new Point2D.Float(640, 640));
 		grass.add(new Point2D.Float(0, 640));
 		for (int i = 0; i <= width; i += 5)
 		{
-			grass.add(new Point2D.Float(i, random(538, 542)));
+			grass.add(new Point2D.Float(i, 520 + noise(i) * 5));
 		}
 		grass.add(new Point2D.Float(640, 640));
+	}
+	
+	float getRadians(float degrees)
+	{
+		return -(float) (degrees * Math.PI / 180);
 	}
 
 	public void draw()
 	{
 		background(bgColor);
-		
+
 		pushStyle();
 		noStroke();
 		fill(30, 130, 76);
@@ -77,18 +87,21 @@ public class Main extends PApplet
 			vertex(loc.x, loc.y);
 		}
 		endShape();
-		
-		stroke(210, 215, 211);
-		strokeWeight(3);
-		fill(236, 240, 241);
-		ellipse(100, 100, 75, 75);
-		
 		popStyle();
-		
+
 		for (PSystem system : systems)
 		{
 			system.draw();
 		}
+		
+		pushStyle();
+
+		stroke(210, 215, 211);
+		strokeWeight(3);
+		fill(236, 240, 241);
+		ellipse(100, 100, 75, 75);
+
+		popStyle();
 
 	}
 
@@ -97,20 +110,6 @@ public class Main extends PApplet
 		if (key == ' ')
 		{
 			exit();
-		}
-		if (key == 'a')
-		{
-
-		}
-		if (key == 's')
-		{
-		}
-		if (key == 'd')
-		{
-		}
-		if (key == 'f')
-		{
-
 		}
 	}
 }

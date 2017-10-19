@@ -11,9 +11,9 @@ public class PSystem
 
 	private PVector loc;
 
-	private float vel, velMin, velMax;
+	private float vel, velAngle, velMin, velMax;
 
-	private float acc, accMin, accMax;
+	private float acc, accAngle, accMin, accMax;
 
 	private float spreadX, spreadY;
 
@@ -25,17 +25,19 @@ public class PSystem
 
 	private ArrayList<Particle> particles;
 
-	PSystem(PApplet p, float x, float y,float vel, float velMin, float velMax, float acc, float accMin, float accMax, float spreadX, float spreadY, float size, float spreadSize, int color, int particleMax, int lifeSpan, int spreadLifeSpan)
+	PSystem(PApplet p, float x, float y,float vel, float velAngle, float velMin, float velMax, float acc, float accAngle, float accMin, float accMax, float spreadX, float spreadY, float size, float spreadSize, int color, int particleMax, int lifeSpan, int spreadLifeSpan)
 	{
 		this.p = p;
 		
 		loc = new PVector(x, y);
 		
 		this.vel = vel;
+		this.velAngle = velAngle;
 		this.velMin = velMin;
 		this.velMax = velMax;
 		
 		this.acc = acc;
+		this.accAngle = accAngle;
 		this.accMin = accMin;
 		this.accMax = accMax;
 
@@ -59,7 +61,13 @@ public class PSystem
 	{
 		while (particles.size() < particleMax)
 		{
-			particles.add(new Particle(p, loc.x + p.random(-spreadX, spreadX), loc.y + p.random(-spreadY, spreadY), 10, 10, size + p.random(-spreadSize, spreadSize), color,
+			PVector vel = new PVector(this.vel + p.random(velMin, velMax),0);
+			PVector acc = new PVector(this.acc + p.random(accMin, accMax),0);
+			
+			vel.rotate(velAngle);
+			acc.rotate(accAngle);
+			
+			particles.add(new Particle(p, loc.x + p.random(-spreadX, spreadX), loc.y + p.random(-spreadY, spreadY), vel, acc, size + p.random(-spreadSize, spreadSize), color,
 					(int) (lifeSpan + p.random(-spreadLifeSpan, spreadLifeSpan))));
 		}
 
